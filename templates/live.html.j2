@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>EP2017 Live</title>
+  <meta name="description" content="EP2017">
+  <meta name="author" content="ultrabug">
+
+  <style>
+    body, html {
+        color: white;
+        height: 100%;
+    }
+    #table-container
+    {
+        display:    table;
+        height:     100%;
+        text-align: center;
+        width:      100%;
+    }
+    #container
+    {
+        display:        table-cell;
+        vertical-align: middle;
+    }
+    #main
+    {
+        display: inline-block;
+    }
+    h1, h2 {
+        background-color: black;
+        text-align: center;
+    }
+    h2 {
+        color: orange;
+    }
+    #counters {
+        text-align: left;
+        margin: 0;
+    }
+    #count {
+        color: green;
+        display: inline-block;
+    }
+    #hash_function {
+        color: grey;
+    }
+  </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var oReq = new XMLHttpRequest();
+
+        function timedRefresh(timeoutPeriod) {
+            // alert('load');
+            oReq.addEventListener("error", retryOnFailure);
+            oReq.addEventListener("load", overwritePage);
+            oReq.open("GET", window.location);
+            setTimeout("oReq.send();", timeoutPeriod);
+        }
+
+        function overwritePage () {
+            document.write(this.responseText);
+            document.close();
+        }
+
+        function retryOnFailure() {
+            oReq = new XMLHttpRequest();
+            document.getElementById('count').style.color = 'red';
+            timedRefresh(2000);
+        }
+
+        window.onload = timedRefresh(2000);
+    </script>
+    <div id="table-container">
+      <div id="container">
+          <div id="main">
+              <h1 id='counters'># nodes: <div id='count'>{{ nodes_count }}</div></h1>
+              <!-- <h1 id='counters'># changes: <div id='count'>{{ winner_changes }}</div></h1> -->
+              <h2 id='hash_function'>( {{ hash_function }} )</h2>
+              <hr/>
+              <h1>Winner</h1>
+              <h2>{{ winner_node }}</h2>
+          </div>
+      </div>
+    </div>
+</body>
+</html>

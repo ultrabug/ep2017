@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>EP2017 Game</title>
+  <meta name="description" content="EP2017">
+  <meta name="author" content="ultrabug">
+
+  <style>
+    body, html {
+        color: white;
+        height: 100%;
+    }
+    #table-container
+    {
+        display:    table;
+        height:     100%;
+        text-align: center;
+        width:      100%;
+    }
+    #container
+    {
+        display:        table-cell;
+        vertical-align: middle;
+    }
+    #main
+    {
+        display: inline-block;
+    }
+    h1, h2 {
+        background-color: black;
+        color: green;
+        text-align: center;
+        margin: 0;
+    }
+    #gif {
+        width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var oReq = new XMLHttpRequest();
+
+        function timedRefresh(timeoutPeriod) {
+            // alert('load');
+            oReq.addEventListener("error", retryOnFailure);
+            oReq.addEventListener("load", overwritePage);
+            oReq.open("GET", window.location);
+            setTimeout("oReq.send();", timeoutPeriod);
+        }
+
+        function overwritePage () {
+            document.write(this.responseText);
+            document.close();
+        }
+
+        function retryOnFailure() {
+            oReq = new XMLHttpRequest();
+            document.getElementById('node').style.color = 'red';
+            timedRefresh(2000);
+        }
+
+        window.onload = timedRefresh(2000);
+    </script>
+  <div id="table-container">
+    <div id="container">
+        <div id="main">
+            <h1 id='node'>{{ node }}</h1>
+            <div><img id='gif' src="{{ img_url }}" /></div>
+        </div>
+    </div>
+  </div>
+</body>
+</html>
